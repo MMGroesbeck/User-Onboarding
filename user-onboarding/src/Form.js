@@ -57,7 +57,7 @@ const FormikUserForm = withFormik({
         name: Yup.string().min(3, "Please enter a longer name.").required("Please enter a name."),
         email: Yup.string().email("Please enter a valid email.").required("Email required."),
         password: Yup.string().min(8, "Password must be at least 8 characters.").required("Please enter a password."),
-        tos: Yup.boolean().required("Please accept Terms of Service.")
+        tos: Yup.mixed().notOneOf([false],"Please accept Terms of Service.")
     }),
     handleSubmit(values, {setStatus, resetForm}){
         axios.post("https://reqres.in/api/users/", values)
