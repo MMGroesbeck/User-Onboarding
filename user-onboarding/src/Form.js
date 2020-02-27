@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import "./Form.css"
 
 const UserForm = ({values, touched, errors, status}) => {
     const [user, setUser] = useState({});
@@ -10,8 +11,8 @@ const UserForm = ({values, touched, errors, status}) => {
         status && setUser(user => status)
     },[status])
   return (
-    <div className="user-form">
-      <Form>
+    <div className="user-form-box">
+      <Form class="user-form">
         <label htmlFor="name">
           Name:
           <Field id="name" type="text" name="name" placeholder="Name" />

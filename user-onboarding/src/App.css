@@ -1,5 +1,10 @@
 .App {
-  text-align: center;
+  width: 60%;
+  border: 1px dotted red;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: papayawhip;
+  align-items: center;
 }
 
 .App-logo {
