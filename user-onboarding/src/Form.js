@@ -7,12 +7,11 @@ import "./Form.css"
 const UserForm = ({values, touched, errors, status}) => {
     const [user, setUser] = useState({});
     useEffect (() => {
-        console.log("status has changed", status)
         status && setUser(user => status)
     },[status])
   return (
     <div className="user-form-box">
-      <Form class="user-form">
+      <Form className="user-form">
         <label htmlFor="name">
           Name:
           <Field id="name" type="text" name="name" placeholder="Name" />
@@ -33,6 +32,15 @@ const UserForm = ({values, touched, errors, status}) => {
             <Field id="tos" type="checkbox" name="tos"/>
             {touched.tos && errors.tos && (<p className="errors">{errors.tos}</p>)}
         </label>
+        <label htmlFor="role">
+            <Field as="select" className="role-select" name="role">
+                <option role="nochoice">Choose a Role</option>
+                <option role="dev">Dev</option>
+                <option role="supervisor">Supervisor</option>
+                <option role="arlecchino">Arlecchino</option>
+            </Field>
+            {touched.role && errors.role && (<p className="errors">{errors.role}</p>)}
+        </label>
         <button type="submit">Submit</button>
       </Form>
       {user.id && <ul key={user.id}>
@@ -46,24 +54,25 @@ const UserForm = ({values, touched, errors, status}) => {
 };
 
 const FormikUserForm = withFormik({
-    mapPropsToValues({name, email, password, tos}) {
+    mapPropsToValues({name, email, password, tos, role}) {
         return {
             name: name || "",
             email: email || "",
             password: password || "",
-            tos: tos || false
+            tos: tos || false,
+            role: role || "nochoice"
         };
     },
     validationSchema: Yup.object().shape({
         name: Yup.string().min(3, "Please enter a longer name.").required("Please enter a name."),
-        email: Yup.string().email("Please enter a valid email.").required("Email required."),
+        email: Yup.string().email("Please enter a valid email.").required("Email required.").notOneOf(["waffle@syrup.com"], "That email is already taken."),
         password: Yup.string().min(8, "Password must be at least 8 characters.").required("Please enter a password."),
-        tos: Yup.mixed().notOneOf([false],"Please accept Terms of Service.")
+        tos: Yup.mixed().notOneOf([false],"Please accept Terms of Service."),
+        role: Yup.mixed().notOneOf(["nochoice"], "Please choose a role.")
     }),
     handleSubmit(values, {setStatus, resetForm}){
         axios.post("https://reqres.in/api/users/", values)
         .then( response => {
-            console.log("Post successful, ", response);
             setStatus(response.data);
             resetForm();
         })
