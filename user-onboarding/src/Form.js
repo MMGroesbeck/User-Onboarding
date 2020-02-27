@@ -4,10 +4,12 @@ import * as Yup from "yup";
 import axios from "axios";
 import "./Form.css"
 
-const UserForm = ({values, touched, errors, status}) => {
+const UserForm = ({values, touched, errors, status, addMember}) => {
     const [user, setUser] = useState({});
     useEffect (() => {
-        status && setUser(user => status)
+        status && setUser(user => status);
+        console.log(user);
+        user.name && addMember(user)
     },[status])
   return (
     <div className="user-form-box">
